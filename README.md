@@ -7,5 +7,5 @@
 
 Python code utilizing FastAPI, as part of their tutorial within the docs. 
 
-### Docs: [Here](https://fastapi.tiangolo.com/)]
+### Docs: [Here](https://fastapi.tiangolo.com/)
 ### Tutorial: [Here](https://fastapi.tiangolo.com/learn/)
