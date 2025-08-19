@@ -20,12 +20,19 @@ async def root():
     return {"message": "Hello World"}
 
 @app.get("/items")
-async def read_item(skip: int = 0, limit: int = 10):
+async def read_items(skip: int = 0, limit: int = 10):
     return fake_items_db[skip : skip + limit]
 
 @app.get("/items/{item_id}") # gets an item from a collection of items
-async def read_item(item_id: int): # type declaration, specifies integer
-    return {"item_id": item_id}
+async def read_item(item_id: str, q: str | None = None, short: bool = False): # type declarations
+    item = {"item_id": item_id} # query parameter
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a longer description"}
+        )
+    return item
 
 @app.get("/users") # returns list of users
 async def read_users():
@@ -51,6 +58,24 @@ async def get_model(model_name: ModelName): #path parameter requires ModelName c
 @app.get("/files/{file_path:path}")
 async def read_file(file_path: str):
     return {"file_path": file_path}
+
+@app.get("/users/{user_id}/items/{item_id}")
+async def read_user_items(
+    user_id: int, item_id: str, q: str | None = None, short: bool = False
+):
+    item = {"item_id": item_id, "owner_id": user_id} # multiple query parameters
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a long description"}
+        )
+    return item
+
+@app.get("/items/{item_id}")
+async def read_user_item(item_id: str, needy: str): # required parameter, needs to be set in URL
+    item = {"item_id": item_id, "needy": needy}
+    return item
 
 
 
